@@ -240,12 +240,29 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
-    
+    //take the arguments array whcih holds all the other objects
+    //go through the arguments array and pull out the properties and add them to the original object
+    _.each(arguments, function(otherObjs){
+      for(var key in otherObjs){
+    //this is going through the objects inside the argumetns array 
+        obj[key] = otherObjs[key];
+    //this assigns the obj key val pairs to the original object
+      };
+    });
+    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    _.each(arguments, function(otherObjs, index){
+      _.each(otherObjs, function(values, key){
+        if(!obj.hasOwnProperty(key)){
+        obj[key] = otherObjs[key];
+      }
+      });
+    });
+    return obj;
   };
 
 
