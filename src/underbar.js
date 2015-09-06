@@ -308,22 +308,14 @@
 
   //return stored[key];
 
-  _.memoize = function(func) {
-    var stored = {};
-    var alreadyCalled = false;
+  _.memoize = function(func){
     return function(){
-      if(!alreadyCalled){
-        alreadyCalled = true;
-        var key = func.apply(this, arguments);
-         if(func.hasOwnProperty(key)){
-          return stored[key];
-         }
-         alreadyCalled = false;
-        stored[key] = func.apply(this, arguments);
-        return stored[key];
-      }
-    }
+      var args = Array.prototype.slice.call(arguments);
+      func.memoize = func.memoize || {};
+      return (args in func.memoize) ? func.memoize[args] : func.memoize[args] = func.apply(this, arguments);
+    };
   };
+
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
